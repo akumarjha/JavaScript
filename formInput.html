@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Form Input</title>
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+        <script src="node_modules/jquery/dist/jquery.js"></script>
+        <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+        <script>
+            function OkClick(){
+                document.getElementById("lblName").innerHTML = document.getElementById("txtName").value;
+                document.getElementById("lblPrice").innerHTML = document.getElementById("txtPrice").value;
+                document.getElementById("lblMfd").innerHTML = document.getElementById("txtMfd").value;
+                document.getElementById("lblCity").innerHTML = document.getElementById("lstCities").value;
+
+                document.getElementById("details").style.display = "block";
+            }
+        </script>
+    </head>
+    <body class="container-fluid">
+        <h2>Form Input Demo</h2>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#register" >Register Product</button>
+        
+        <div class="modal fade" id="register">  
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Register Product</h3>
+                        <button data-dismiss="modal" class="close">x</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <div>
+                                <input id="txtName" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Price</label>
+                            <div>
+                                <input id="txtPrice" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Manufactured</label>
+                            <div>
+                                <input id="txtMfd" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Shipped To</label>
+                            <div>
+                                <select id="lstCities" class="form-control">
+                                    <option value="Delhi">Delhi</option>
+                                    <option value="Hyderabad">Hyderabad</option>
+                                    <option value="Chennai" >Chennai</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="OkClick()" class="btn btn-primary" data-dismiss="modal">OK</button>
+                        <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="details" style="display: none;">
+            <h2>Product Details</h2>
+            <dl class="row">
+            <dt class="col-2">Name</dt>
+            <dd id="lblName" class="col-10"></dd>
+            <dt class="col-2">Price</dt>
+            <dd id="lblPrice" class="col-10"></dd>
+            <dt class="col-2">Manufactured</dt>
+            <dd id="lblMfd" class="col-10"></dd>
+            <dt  class="col-2">Shipped To</dt>
+            <dd id="lblCity" class="col-10"></dd>
+         </dl>
+        </div>
+    </body>
+</html>

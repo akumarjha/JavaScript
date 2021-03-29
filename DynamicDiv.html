@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="Fonts/css/all.css">
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <style>
+        .card {
+            padding: 20px;
+        }
+
+        #txtHeader {
+            background-color: darkcyan;
+            color: white;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 20px;
+        }
+        #cardDeck{
+            padding-top: 20px;
+        }
+    </style>
+    <script>
+        var products = [
+            { Name: "JBL Speaker", Price: 4500.55, Photo: "Images/speaker.png" },
+            { Name: "Nike Casuals", Price: 6500.55, Photo: "Images/shoes.png" },
+            { Name: "Shirt", Price: 2500.55, Photo: "Images/shirt.jpg" },
+        ]
+        function addToCart(){
+            alert("Items Added to cart..");
+        }
+        function bodyload() {
+            var cardDeck = document.getElementById("cardDeck");
+            for (var item of products) {
+                //card Header
+                var cardDiv = document.createElement("div");
+                cardDiv.className = "card";
+                var cardHeader = document.createElement("div");
+                cardHeader.className = "card-header text-center";
+                var h3 = document.createElement("h3");
+                h3.innerHTML = item.Name;
+                cardHeader.appendChild(h3);
+                cardDiv.appendChild(cardHeader);
+                //card body
+                var cardBody = document.createElement("div");
+                cardBody.className = "card-body";
+                cardBody.style.textAlign = "center";
+                var bodyImg = document.createElement("img");
+                bodyImg.className = "rounded-circle border border-primary";
+                bodyImg.src = item.Photo;
+                bodyImg.width = "200";
+                bodyImg.height = "200";
+                var bodyP = document.createElement("p");
+                bodyP.className = "card-subtitle";
+                bodyP.style.paddingTop = "30px";
+                bodyP.innerHTML = "&#8377;" + item.Price;
+                cardBody.appendChild(bodyImg);
+                cardBody.appendChild(bodyP);
+                cardDiv.appendChild(cardBody);
+                //card footer
+
+                var cardFooter = document.createElement("div");
+                cardFooter.className = "card-footer";
+                var footerButton = document.createElement("button");
+                footerButton.className = "btn btn-outline-primary btn-block btn";
+                footerButton.innerHTML = "Add To Cart";
+                // footerButton.onclick  = "addToCart();"
+                cardFooter.appendChild(footerButton);
+                cardDiv.appendChild(cardFooter);
+
+                cardDeck.appendChild(cardDiv);
+            }
+        }
+        //document.querySelector('.btn').addEventListener('click', addToCart);
+    </script>
+</head>
+
+<body onload="bodyload()" class="container-fluid">
+    <h3 id="txtHeader" class="text-center">Products Catalog</h3>
+    <div id="cardDeck" class="card-deck">
+
+    </div>
+</body>
+
+</html>

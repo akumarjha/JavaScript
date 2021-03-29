@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Shopping</title>
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="Fonts/css/all.css">
+        <script src="node_modules/jquery/dist/jquery.js"></script>
+        <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+        <style>
+            label {
+                font-size: 18px;
+                font-weight: bold;
+            }
+        </style>
+        <script>
+            var categories = ["Select Category", "Electronics", "Footwear", "Fashion"];
+            
+            var electronics = ["Select Electronic Product", "JBL Speaker", "Earpods"];
+            var footwear = ["Select Footwear", "Nike Casuals", "Lee Cooper Boot"];
+            var fashion = ["Select Fashion Product", "Shirt", "Jeans"];
+
+            var products = [];
+
+            var data = [
+                {Name: "JBL Speaker", Price: 4500.44, Photo:"Images/speaker.png"},
+                {Name: "Earpods", Price: 6500.44, Photo:"Images/headphone.jpg"},
+                {Name: "Nike Casuals", Price: 7000.44, Photo:"Images/shoes.png"},
+                {Name: "Lee Cooper Boot", Price: 3500.44, Photo:"Images/shoe1.jpg"},
+                {Name: "Shirt", Price: 2500.44, Photo:"Images/shirt.jpg"},
+                {Name: "Jeans", Price: 6500.44, Photo:"Images/jeans.webp"},
+            ];
+            var cartItems = [];
+
+            function calculateProductPrice(qty, price)
+            {
+                return parseInt(qty) * parseFloat(price);
+            }
+            function LoadProducts(){
+                var lstProducts = document.getElementById("lstProducts");
+                lstProducts.innerHTML = "";
+                for(var item of products)
+                {
+                    var opt = document.createElement("option");
+                    opt.text = item;
+                    opt.value = item;
+
+                    lstProducts.appendChild(opt);
+                }
+            }
+
+            function LoadCategories(){
+                var lstCategories = document.getElementById("lstCategories");
+                for(var item of categories)
+                {
+                    var opt = document.createElement("option");
+                    opt.text = item;
+                    opt.value = item;
+                    lstCategories.appendChild(opt);
+                }
+            }
+            function bodyload(){
+                LoadCategories();
+                UpdateCount();
+            }
+            function CategoryChanged(){
+                var categoryName = document.getElementById("lstCategories").value;
+                switch(categoryName)
+                {
+                    case "Electronics": 
+                    products = electronics;
+                    LoadProducts();
+                    break;
+                    case "Footwear": 
+                    products = footwear;
+                    LoadProducts();
+                    break;
+                    case "Fashion": 
+                    products = fashion;
+                    LoadProducts();
+                    break;
+                    default: 
+                    products = ["Select a Category"];
+                    LoadProducts();
+                    break;
+                }
+            }
+            var searchedProduct;
+            function addQuantityToProduct(){
+                var productName = document.getElementById("lstProducts").value;
+                searchedProduct = data.find(function(cartItems){
+                    return product.Name == productName;
+                });
+                searchedProduct.Quantity = document.getElementById("qtyProduct").value;
+            }
+            function ProductChanged(){
+                var productName = document.getElementById("lstProducts").value;
+                searchedProduct = data.find(function(product){
+                    return product.Name == productName;
+                });
+                document.getElementById("lblName").innerHTML = searchedProduct.Name;
+                // document.getElementById("lblQty").innerHTML  = document.getElementById("qtyProduct").value;
+                document.getElementById("lblPrice").innerHTML = "&#8377;" + searchedProduct.Price;
+                document.getElementById("imgProduct").src= searchedProduct.Photo;
+            }
+
+            function UpdateCount(){
+                document.getElementById("lblCount").innerHTML = cartItems.length;
+            }
+            function AddToCartClick(){
+                searchedProduct.Quantity = document.getElementById("qtyProduct").value;
+                // addQuantityToProduct();
+                cartItems.push(searchedProduct);
+                addQuantityToProduct();
+                // cartItems.Quantity = document.getElementById("qtyProduct").value;
+                UpdateCount();
+                alert("Item Added to Cart");
+                console.log(searchedProduct);
+                LoadCartItemsIntoTable();
+            }
+
+            function LoadCartItemsIntoTable()
+            {
+               var tbody =  document.getElementById("tbody");
+               tbody.innerHTML = "";
+               var totalPrice = 0;
+               for(var item of cartItems) {
+                   var tr = document.createElement("tr");
+                   tdName = document.createElement("td");
+                   tdQty  = document.createElement("td");
+                   tdPrice = document.createElement("td");
+                   tdPhoto = document.createElement("td");
+
+                   tdName.innerHTML = item.Name;
+                   tdQty.innerHTML  = item.Quantity;
+                   tdPrice.innerHTML = calculateProductPrice(item.Quantity, item.Price);
+                   totalPrice += parseInt(calculateProductPrice(item.Quantity, item.Price));
+                   console.log(totalPrice);
+
+                   var img = document.createElement("img");
+                   img.src= item.Photo;
+                   img.height="50";
+                   img.width="50";
+
+                   tdPhoto.appendChild(img);
+
+                   tr.appendChild(tdName);
+                   tr.appendChild(tdQty);
+                   tr.appendChild(tdPrice);
+                   tr.appendChild(tdPhoto);
+
+                   tbody.appendChild(tr);
+               }
+               var trTotal = document.createElement("tr")
+               tdTotal     = document.createElement("td");
+               tdTotal.colSpan = "2";
+               tdTotal.innerHTML ="Total";
+               tdTotalPrice = document.createElement("td");              
+               tdTotalPrice.innerHTML = totalPrice;
+               trTotal.appendChild(tdTotal);
+               trTotal.appendChild(tdTotalPrice);
+               tbody.appendChild(trTotal);
+            }
+        </script>
+    </head>
+    <body onload="bodyload()" class="container-fluid">
+      <header class="bg-danger p-2 text-white text-center">
+          <h1> <span class="fa fa-shopping-cart"></span> Amazon Shopping</h1>
+      </header>
+      <div class="row mt-4">
+        <div class="col-3">
+          <div class="form-group">
+            <label>Select a Category</label>
+            <div>
+                <select onchange="CategoryChanged()" class="form-control" id="lstCategories">
+
+                </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Select Product</label>
+            <div>
+                <select onchange="ProductChanged()" class="form-control" id="lstProducts">
+
+                </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Preview</label>
+            <div class="card">
+                <div class="card-header">
+                    <h3 id="lblName"></h3>
+                </div>
+                <div class="card-body text-center">
+                    <img id="imgProduct" width="200" height="200">
+                    <h4 id="lblPrice"></h4>
+                    <input id ="qtyProduct" type="number" value="1" min="1" max="4"> Qty
+                </div>
+                <div class="card-footer">
+                    <button onclick="AddToCartClick()" class="btn btn-danger btn-block">
+                        <span class="fa fa-shopping-cart"></span>
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+
+        </div>
+        <div class="col-3">
+          <button data-toggle="modal" data-target="#shoppingCart" class="btn btn-warning btn-block">
+              <span class="fa fa-shopping-basket"></span>
+              [<span id="lblCount"></span>] Your Cart Items
+          </button>
+        </div>
+      </div>
+      <div class="modal fade" id="shoppingCart">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                 <h4>Your Cart Items</h4>
+              </div>
+              <div class="modal-body">
+                 <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Preview</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+
+                    </tbody>
+                 </table>
+              </div>
+              <div class="modal-footer">
+                 <button data-dismiss="modal" class="btn btn-primary">OK</button>
+              </div>
+            </div>
+         </div>
+      </div>
+    </body>
+</html>
